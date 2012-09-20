@@ -50,7 +50,7 @@ public class AopChain {
 	}
 
 	public AopChain doChain() {
-		if (null == filters || filters.size() < 1 || index == filters.size()) {
+		if (null == filters || index == filters.size()) {
 			try {
 				this.result = proxy.invokeSuper(target, args);
 			} catch (Throwable e) {
