@@ -13,11 +13,11 @@ public class User {
 	}
 
 	public void sayHi() {
-		System.out.println(this + " userr say hi 1111111111");
+		System.out.println(this + " 本身的方法 11111");
 	}
 
-	public void sayHi2() {
-		System.out.println(this + " userr say hi 222222222");
+	public void sayHi(String arg) {
+		System.out.println(this + " 本身的方法 22222");
 	}
 
 	public int getAge() {

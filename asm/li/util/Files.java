@@ -15,7 +15,7 @@ public class Files {
 	}
 
 	public static void write(Class<?> type, byte[] bytes) {
-		File file = new File("C:\\Users\\li\\Desktop\\" + type.getName() + ".class");
+		File file = new File("D:\\Users\\li\\Desktop\\" + type.getName() + ".class");
 		write(file, bytes);
 	}
 }
