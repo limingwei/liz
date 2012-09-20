@@ -14,7 +14,7 @@ public class AopClassVisitor extends ClassVisitor implements Opcodes {
 	}
 
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-
+		System.err.println("in AopClassVisitor");
 		return super.visitMethod(access, name, desc, signature, exceptions);
 	}
 }
