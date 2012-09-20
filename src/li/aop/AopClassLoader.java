@@ -28,13 +28,13 @@ public class AopClassLoader extends ClassLoader implements Opcodes {
 	private <T> Class<T> handle(Class<T> type) {
 		try {
 			ClassReader classReader = new ClassReader(type.getName());
-			ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_MAXS);
+			ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 
-			ClassVisitor classVisitor = new AopClassVisitor(classWriter);
+			ClassVisitor classVisitor = new AopClassVisitor(classWriter);// 使用AopClassVisitor加载并修改Class
 			classReader.accept(classVisitor, ASM4);
 
 			byte[] bytes = classWriter.toByteArray();
-			return (Class<T>) instance.defineClass(type.getName() + "$Aop", bytes, 0, bytes.length);// byte 数组转换为 Class 类的实例
+			return (Class<T>) instance.defineClass(type.getName() + "$Aop", bytes, 0, bytes.length);// byte 数组转换为Class 类
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
