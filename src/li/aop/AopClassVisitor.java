@@ -2,6 +2,7 @@ package li.aop;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -39,15 +40,11 @@ public class AopClassVisitor extends ClassVisitor implements Opcodes {
 
 	public void visitEnd() {
 		MethodVisitor methodVisitor = cv.visitMethod(ACC_PUBLIC, "newMethod", "()V", null, null);
-		methodVisitor.visitCode();
-
 		methodVisitor.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");// 插入Aop代码
 		methodVisitor.visitLdcInsn("Aop插入的newMethod代码");
 		methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
 
 		methodVisitor.visitInsn(RETURN);
 		methodVisitor.visitMaxs(0, 1);
-		methodVisitor.visitEnd();
-		super.visitEnd();
 	}
 }
