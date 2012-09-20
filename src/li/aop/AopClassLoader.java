@@ -1,7 +1,5 @@
 package li.aop;
 
-import java.io.File;
-
 import li.util.Files;
 
 import org.objectweb.asm.ClassReader;

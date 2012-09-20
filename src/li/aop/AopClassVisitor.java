@@ -22,7 +22,7 @@ public class AopClassVisitor extends ClassVisitor implements Opcodes {
 	 */
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		if ("sayHi".equals(name)) {
-			return null;
+			// return null;
 		}
 		return cv.visitMethod(access, name, desc, signature, exceptions);// ,默认复制父类方法体
 	}

@@ -14,4 +14,12 @@ public class User {
 	public void sayHi2() {
 		System.out.println(this + " userr say hi 222222222");
 	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
 }
