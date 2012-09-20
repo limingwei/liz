@@ -8,5 +8,9 @@ public class T {
 		user.sayHi();
 		user.sayHi();
 		user.sayHi();
+
+		user.setAge(123);
+
+		System.out.println(user.getAge());
 	}
 }

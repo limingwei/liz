@@ -21,9 +21,13 @@ public class AopClassVisitor extends ClassVisitor implements Opcodes {
 	 * 访问方法
 	 */
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-		if ("sayHi".equals(name)) {
-			// return null;
+		if ("<init>".equals(name)) {
+			return cv.visitMethod(access, name, desc, signature, exceptions);// 构造方法,复制父类方法体
+		} else if ("123".equals(name)) {
+			MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);// 指定方法,返回修改后的方法体
+			return new AopMethodVisitor(methodVisitor);
+		} else {
+			return null;// 其他方法,不重写
 		}
-		return cv.visitMethod(access, name, desc, signature, exceptions);// ,默认复制父类方法体
 	}
 }

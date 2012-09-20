@@ -4,7 +4,12 @@ public class User {
 	private int age;
 
 	public User() {
-		System.out.println("User 的构造函数");
+		System.out.println("User 的默认构造函数");
+	}
+
+	public User(int age) {
+		this.age = age;
+		System.out.println("代一个参数的构造函数");
 	}
 
 	public void sayHi() {
