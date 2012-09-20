@@ -1,4 +1,4 @@
-package test;
+package li.aop;
 
 import li.annotation.Aop;
 import li.annotation.Bean;
