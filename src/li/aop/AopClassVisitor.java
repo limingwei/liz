@@ -28,7 +28,26 @@ public class AopClassVisitor extends ClassVisitor implements Opcodes {
 	 */
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		System.err.println(access + "\t" + name + "\t" + desc + "\t" + signature + "\t" + exceptions);
+		MethodVisitor methodVisitor = cv.visitMethod(access, name, desc, signature, exceptions);// 本来的方法体
+		if (!"<init>".equals(name)) {// 构造方法除外
+			methodVisitor.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");// 插入Aop代码
+			methodVisitor.visitLdcInsn("Aop插入的代码");
+			methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+		}
+		return methodVisitor;
+	}
 
-		return super.visitMethod(access, name, desc, signature, exceptions);
+	public void visitEnd() {
+		MethodVisitor methodVisitor = cv.visitMethod(ACC_PUBLIC, "newMethod", "()V", null, null);
+		methodVisitor.visitCode();
+
+		methodVisitor.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");// 插入Aop代码
+		methodVisitor.visitLdcInsn("Aop插入的newMethod代码");
+		methodVisitor.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V");
+
+		methodVisitor.visitInsn(RETURN);
+		methodVisitor.visitMaxs(0, 1);
+		methodVisitor.visitEnd();
+		super.visitEnd();
 	}
 }

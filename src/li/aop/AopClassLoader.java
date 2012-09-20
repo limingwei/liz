@@ -1,5 +1,8 @@
 package li.aop;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -34,7 +37,21 @@ public class AopClassLoader extends ClassLoader implements Opcodes {
 			classReader.accept(classVisitor, ASM4);
 
 			byte[] bytes = classWriter.toByteArray();
+
+			writeFile(type, bytes);// 把修改后的Class写到桌面，供查看
+
 			return (Class<T>) instance.defineClass(type.getName() + "$Aop", bytes, 0, bytes.length);// byte 数组转换为Class 类
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void writeFile(Class<?> type, byte[] bytes) {
+		try {
+			File file = new File("C:\\Users\\li\\Desktop\\" + type.getName() + ".class");
+			FileOutputStream fileOutputStream = new FileOutputStream(file);
+			fileOutputStream.write(bytes);
+			fileOutputStream.close();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
