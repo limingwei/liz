@@ -7,7 +7,6 @@ public class T {
 		User user = Ioc.get(User.class);
 		Account account = Ioc.get(Account.class);
 		System.out.println(user);
-
 		account.list(null);
 	}
 }
