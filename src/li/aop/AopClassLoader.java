@@ -1,7 +1,6 @@
 package li.aop;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 import li.util.Files;
 
@@ -40,7 +39,7 @@ public class AopClassLoader extends ClassLoader implements Opcodes {
 
 			byte[] bytes = classWriter.toByteArray();
 
-			Files.write(new File("C:\\Users\\li\\Desktop\\" + type.getName() + ".class"), new String(bytes));// 把修改后的Class写到桌面，供查看
+			Files.write(type, bytes);// 把修改后的Class写到桌面，供查看
 
 			return (Class<T>) instance.defineClass(type.getName() + "$Aop", bytes, 0, bytes.length);// byte 数组转换为Class 类
 		} catch (Exception e) {
