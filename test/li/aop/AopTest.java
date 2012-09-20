@@ -9,9 +9,15 @@ public class AopTest extends BaseTest {
 
 	@Test
 	public void testAop() {
-		User user = Ioc.get(User.class);
-		Account account = Ioc.get(Account.class);
-		System.out.println(user);
-		account.list(null);
+		final Account account = Ioc.get(Account.class);
+
+		for (int i = 0; i < 10; i++) {
+			// new Thread() {
+			// public void run() {
+			System.out.println("hello");
+			account.list(null);
+			// };
+			// }.start();
+		}
 	}
 }

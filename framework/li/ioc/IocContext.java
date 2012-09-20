@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import li.aop.AopInterceptor;
 import li.model.Bean;
 import li.model.Field;
@@ -65,8 +67,7 @@ public class IocContext {
 
 			// STEP-3-实例化所有的Bean,并缓存之
 			for (Bean bean : IOC_CONTEXT.BEANS) {
-				// bean.instance = Reflect.born(bean.type);
-				bean.instance = AopInterceptor.AOP_INTERCEPTOR.getInstance(Reflect.born(bean.type));
+				bean.instance = new AopInterceptor().getInstance(Reflect.born(bean.type));
 			}
 
 			// STEP-4-给IocContext中的Bean设置属性

@@ -26,8 +26,6 @@ public class AopInterceptor implements MethodInterceptor {
 
 	private static final TransFilter TRANS_FILTER = new TransFilter();
 
-	public static final AopInterceptor AOP_INTERCEPTOR = new AopInterceptor();
-
 	/**
 	 * Aop包裹一个对象
 	 */
