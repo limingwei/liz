@@ -8,9 +8,5 @@ public class T {
 		user.sayHi();
 		user.sayHi();
 		user.sayHi();
-
-		System.out.println(user.toString());
-
-		user.getClass().getMethod("newMethod").invoke(user);
 	}
 }

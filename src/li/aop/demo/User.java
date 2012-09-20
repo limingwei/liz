@@ -8,10 +8,10 @@ public class User {
 	}
 
 	public void sayHi() {
-		System.out.println(this + " user say hi");
+		System.out.println(this + " userr say hi 1111111111");
 	}
 
-	public void sayHello() {
-		System.out.println(this + " Saying Hello");
+	public void sayHi2() {
+		System.out.println(this + " userr say hi 222222222");
 	}
 }
