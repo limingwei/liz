@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import li.aop.AopFilter;
 import li.aop.AopInterceptor;
 import li.model.Bean;
 import li.model.Field;

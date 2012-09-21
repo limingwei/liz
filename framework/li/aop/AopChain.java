@@ -57,11 +57,10 @@ public class AopChain {
 	 */
 	public AopChain doFilter() {
 		try {
-			if (null == filters || index == filters.size()) {
-				this.result = proxy.invokeSuper(target, args);
+			if (null == filters || index == filters.size()) {// 如果没有AopFilter或者已经经过全部AopFilter
+				this.result = proxy.invokeSuper(target, args);// 则执行目标方法
 			} else {
-				index++;
-				filters.get(index - 1).doFilter(this);
+				filters.get(index++).doFilter(this);// 执行下一个AopFilter
 			}
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
