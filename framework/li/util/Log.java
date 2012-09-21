@@ -3,6 +3,8 @@ package li.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * 日志工具类,自动适配Log4j或Console
  * 
@@ -16,7 +18,7 @@ public abstract class Log {
 	public static Log init(final Class<?> type) {
 		try {
 			return new Log() {// 尝试初始化Log4J
-				Object logger = Class.forName("org.apache.log4j.Logger").getMethod("getLogger", Class.class).invoke(null, type);
+				Logger logger = Logger.getLogger(type);
 
 				protected void log(String method, Object msg) {
 					try {
@@ -27,7 +29,7 @@ public abstract class Log {
 					}
 				};
 			};
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			return new Log() {// 返回ConsoleLog
 				protected void log(String method, Object msg) {
 					StackTraceElement trace = Thread.currentThread().getStackTrace()[3];

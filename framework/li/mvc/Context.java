@@ -357,7 +357,7 @@ public class Context {
 			org.apache.velocity.Template template = Velocity.getTemplate(path);// velocity模板
 			template.merge(context, getResponse().getWriter());
 			log.info("velocity to: " + path);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			error(e);
 		}
 		return "DONE";
@@ -382,7 +382,7 @@ public class Context {
 			freemarker.template.Template template = configuration.getTemplate(path);// 加载模板
 			template.process(getAttributes(), getResponse().getWriter());
 			log.info("freemarker to: " + path);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			error(e);
 		}
 		return "DONE";
@@ -412,7 +412,7 @@ public class Context {
 			}
 			template.getText(getResponse().getWriter());// merge 模板和模型，将内容输出到Writer里
 			log.info("forword to beetl: " + path);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			error(e);
 		}
 		return "DONE";

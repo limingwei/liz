@@ -74,7 +74,12 @@ public class IocContext {
 			// STEP-4-实例化并Aop化所有的非AopFilter的Bean,并缓存之
 			for (Bean bean : IOC_CONTEXT.BEANS) {
 				if (!AopFilter.class.isAssignableFrom(bean.type)) {
-					bean.instance = AopInterceptor.getInstance(bean.type);
+					try {
+						bean.instance = AopInterceptor.getInstance(bean.type);
+					} catch (Throwable e) {
+						log.debug("Aop not supported: " + e);
+						bean.instance = Reflect.born(bean.type);
+					}
 				}
 			}
 
