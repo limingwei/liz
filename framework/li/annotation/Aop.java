@@ -17,7 +17,7 @@ import li.aop.AopFilter;
 @Target(ElementType.METHOD)
 public @interface Aop {
 	/**
-	 * AopFilter的类型列表
+	 * AopFilter的类型列表,会依据此处类型查找AopFilter的Bean
 	 */
 	public Class<? extends AopFilter>[] value();
 }

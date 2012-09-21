@@ -90,7 +90,7 @@ public class AopChain {
 	}
 
 	/**
-	 * 设置方法参数
+	 * 设置方法参数,在doChain之前才有效
 	 */
 	public AopChain setArgs(Object[] args) {
 		this.args = args;
@@ -98,14 +98,14 @@ public class AopChain {
 	}
 
 	/**
-	 * 返回方法返回值,注意:在方法执行后才会取值
+	 * 返回方法返回值,在方法执行后才有值
 	 */
 	public Object getResult() {
 		return this.result;
 	}
 
 	/**
-	 * 设置方法返回值
+	 * 设置方法返回值,设置后不再doChain才有效
 	 */
 	public AopChain setResult(Object result) {
 		this.result = result;
