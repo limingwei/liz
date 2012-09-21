@@ -63,7 +63,7 @@ public class AopChain {
 				filters.get(index++).doFilter(this);// 执行下一个AopFilter
 			}
 		} catch (Throwable e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException("May be because your AopFilter is not a Bean", e);
 		}
 		return this;
 	}
