@@ -64,7 +64,7 @@ public class IocContext {
 				}
 			}
 
-			// STEP-3-实例化并Aop化所有的AopFilter,并缓存之
+			// STEP-3-实例化所有的AopFilter,并缓存之
 			for (Bean bean : IOC_CONTEXT.BEANS) {
 				if (AopFilter.class.isAssignableFrom(bean.type)) {
 					bean.instance = Reflect.born(bean.type);
