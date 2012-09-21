@@ -50,8 +50,6 @@ public class AopInterceptor implements MethodInterceptor {
 
 	/**
 	 * Aop包裹一个对象
-	 * 
-	 * @param <T>
 	 */
 	public Object getInstance(Class<?> type) {
 		filtersMap(type);// 构造这个对象类型所有方法的AopFilter集合
