@@ -30,24 +30,6 @@ public class AopInterceptor implements MethodInterceptor {
 	private static final TransFilter TRANS_FILTER = new TransFilter();
 
 	/**
-	 * Aop包裹一个对象
-	 */
-	public Object getInstance(Object target) {
-		filtersMap(target.getClass());// 构造这个对象类型所有方法的AopFilter集合
-		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(target.getClass());
-		enhancer.setCallback(this);
-		return enhancer.create();
-	}
-
-	/**
-	 * 代理执行方法
-	 */
-	public Object intercept(Object target, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-		return new AopChain(target, method, args, filtersMap.get(method), proxy).doFilter().getResult();// 使用AopChian代理执行这个方法并返回值
-	}
-
-	/**
 	 * 搜集指定类型所有方法的AopFilter
 	 */
 	private void filtersMap(Class<?> type) {
@@ -64,5 +46,23 @@ public class AopInterceptor implements MethodInterceptor {
 			}
 			filtersMap.put(method, filters);
 		}
+	}
+
+	/**
+	 * Aop包裹一个对象
+	 */
+	public Object getInstance(Object target) {
+		filtersMap(target.getClass());// 构造这个对象类型所有方法的AopFilter集合
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(target.getClass());
+		enhancer.setCallback(this);
+		return enhancer.create();
+	}
+
+	/**
+	 * 代理执行方法
+	 */
+	public Object intercept(Object target, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+		return new AopChain(target, method, args, filtersMap.get(method), proxy).doFilter().getResult();// 使用AopChian代理执行这个方法并返回值
 	}
 }
