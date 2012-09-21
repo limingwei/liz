@@ -9,10 +9,13 @@ import li.dao.Trans;
  * @version 0.1.1 (2012-09-20)
  */
 public class TransFilter implements AopFilter {
-	public void filter(final AopChain chain) {
+	/**
+	 * 使用一个li.dao.Trans包裹执行目标方法
+	 */
+	public void doFilter(final AopChain chain) {
 		new Trans() {
 			public void run() {
-				chain.doChain();
+				chain.doFilter();
 			}
 		};
 	}

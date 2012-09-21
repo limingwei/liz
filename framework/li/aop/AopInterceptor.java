@@ -22,21 +22,44 @@ import net.sf.cglib.proxy.MethodProxy;
  * @version 0.1.1 (2012-09-20)
  */
 public class AopInterceptor implements MethodInterceptor {
+	/**
+	 * 保存当前对象各方法的AopFilters
+	 */
 	private Map<Method, List<AopFilter>> filtersMap = new HashMap<>();
-
+	/**
+	 * 内置的TransFilter的一个实例
+	 */
 	private static final TransFilter TRANS_FILTER = new TransFilter();
 
 	/**
 	 * Aop包裹一个对象
 	 */
-	public <T> T getInstance(T target) {
-		for (Method method : target.getClass().getDeclaredMethods()) {
+	public Object getInstance(Object target) {
+		filtersMap(target.getClass());
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(target.getClass());
+		enhancer.setCallback(this);
+		return enhancer.create();
+	}
+
+	/**
+	 * 代理执行方法
+	 */
+	public Object intercept(Object target, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+		return new AopChain(target, method, args, filtersMap.get(method), proxy).doFilter().getResult();
+	}
+
+	/**
+	 * 搜集指定类型所有方法的AopFilter
+	 */
+	private void filtersMap(Class<?> type) {
+		for (Method method : type.getDeclaredMethods()) {
 			List<AopFilter> filters = new ArrayList<>();
 			Aop aop = method.getAnnotation(Aop.class);
 			if (null != aop) {
-				for (Class<? extends AopFilter> type : aop.value()) {
-					AopFilter filter = Ioc.get(type);
-					filters.add(null == filter ? Reflect.born(type) : filter);
+				for (Class<? extends AopFilter> filterType : aop.value()) {
+					AopFilter filter = Ioc.get(filterType);
+					filters.add(null == filter ? Reflect.born(filterType) : filter);
 				}
 			}
 			if (null != method.getAnnotation(Trans.class)) {
@@ -44,17 +67,5 @@ public class AopInterceptor implements MethodInterceptor {
 			}
 			filtersMap.put(method, filters);
 		}
-		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(target.getClass());
-		enhancer.setCallback(this);
-		return (T) enhancer.create();
-	}
-
-	/**
-	 * 代理执行方法
-	 */
-	public Object intercept(Object target, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-		AopChain chain = new AopChain(target, method, args, filtersMap.get(method), proxy);
-		return chain.doChain().getResult();
 	}
 }

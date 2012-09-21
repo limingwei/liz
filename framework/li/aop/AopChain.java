@@ -41,6 +41,9 @@ public class AopChain {
 	 */
 	private int index = 0;
 
+	/**
+	 * 初始化一个AopChain
+	 */
 	public AopChain(Object target, Method method, Object[] args, List<AopFilter> filters, MethodProxy proxy) {
 		this.target = target;
 		this.method = method;
@@ -49,41 +52,64 @@ public class AopChain {
 		this.proxy = proxy;
 	}
 
-	public AopChain doChain() {
-		if (null == filters || index == filters.size()) {
-			try {
+	/**
+	 * 执行AopChain,执行AopFilter链条或者执行代理方法
+	 */
+	public AopChain doFilter() {
+		try {
+			if (null == filters || index == filters.size()) {
 				this.result = proxy.invokeSuper(target, args);
-			} catch (Throwable e) {
-				throw new RuntimeException(e);
+			} else {
+				index++;
+				filters.get(index - 1).doFilter(this);
 			}
-		} else {
-			index++;
-			filters.get(index - 1).filter(this);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
 		}
 		return this;
 	}
 
+	/**
+	 * 返回被代理方法宿主对象
+	 */
 	public Object getTarget() {
 		return target;
 	}
 
+	/**
+	 * 返回被代理方法
+	 */
 	public Method getMethod() {
 		return method;
 	}
 
+	/**
+	 * 返回方法参数
+	 */
 	public Object[] getArgs() {
 		return args;
 	}
 
-	public void setArgs(Object[] args) {
+	/**
+	 * 设置方法参数
+	 */
+	public AopChain setArgs(Object[] args) {
 		this.args = args;
+		return this;
 	}
 
+	/**
+	 * 返回方法返回值,注意:在方法执行后才会取值
+	 */
 	public Object getResult() {
 		return result;
 	}
 
-	public void setResult(Object result) {
+	/**
+	 * 设置方法返回值
+	 */
+	public AopChain setResult(Object result) {
 		this.result = result;
+		return this;
 	}
 }

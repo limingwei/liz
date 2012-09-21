@@ -6,9 +6,9 @@ import li.aop.AopFilter;
 
 @Bean
 public class LogFilter implements AopFilter {
-	public void filter(AopChain chain) {
+	public void doFilter(AopChain chain) {
 		System.err.println("log before");
-		chain.doChain();
+		chain.doFilter();
 		System.err.println("log after");
 	}
 }
