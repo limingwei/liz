@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import li.aop.AopFilter;
 import li.aop.AopInterceptor;
 import li.model.Bean;
 import li.model.Field;
@@ -64,7 +63,7 @@ public class IocContext {
 				}
 			}
 
-			// STEP-3-实例化所有的Bean,并缓存之
+			// STEP-3-实例化并Aop化所有的Bean,并缓存之
 			for (Bean bean : IOC_CONTEXT.BEANS) {
 				bean.instance = new AopInterceptor().getInstance(Reflect.born(bean.type));
 			}
