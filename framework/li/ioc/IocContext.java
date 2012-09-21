@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import li.aop.AopInterceptor;
 import li.model.Bean;
 import li.model.Field;

@@ -13,7 +13,7 @@ public class AopTest extends BaseTest {
 		for (int i = 0; i < 10; i++) {
 			new Thread() {
 				public void run() {
-//					System.out.println("hello");
+					// System.out.println("hello");
 					account.list(null);
 				};
 			}.start();
