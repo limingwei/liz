@@ -69,6 +69,15 @@ public class Context {
 	};
 
 	/**
+	 * 视图层异常处理,为了安全,页面上没有异常信息
+	 */
+	private static void error(Throwable e) {
+		getResponse().setStatus(500);
+		log.error(e.getMessage());
+		e.printStackTrace();
+	}
+
+	/**
 	 * 从request,sesstion,servletContext中取出Attributes转为Map
 	 */
 	private static Map<String, Object> getAttributes() {
@@ -305,7 +314,9 @@ public class Context {
 		try {
 			getResponse().sendRedirect(path);
 		} catch (Exception e) {
-			throw new RuntimeException("redirect error: ", e);
+			getResponse().setStatus(500);
+			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return "DONE";
 	}
@@ -318,7 +329,9 @@ public class Context {
 		try {
 			getRequest().getRequestDispatcher(path).forward(getRequest(), getResponse());
 		} catch (Exception e) {
-			throw new RuntimeException("forword error: ", e);
+			getResponse().setStatus(500);
+			log.error(e.getMessage());
+			e.printStackTrace();
 		}
 		return "DONE";
 	}
@@ -345,7 +358,7 @@ public class Context {
 			template.merge(context, getResponse().getWriter());
 			log.info("velocity to: " + path);
 		} catch (Exception e) {
-			throw new RuntimeException("forword to velocity failed: ", e);
+			error(e);
 		}
 		return "DONE";
 	}
@@ -370,7 +383,7 @@ public class Context {
 			template.process(getAttributes(), getResponse().getWriter());
 			log.info("freemarker to: " + path);
 		} catch (Exception e) {
-			throw new RuntimeException("forword to freemarker failed: ", e);
+			error(e);
 		}
 		return "DONE";
 	}
@@ -400,7 +413,7 @@ public class Context {
 			template.getText(getResponse().getWriter());// merge 模板和模型，将内容输出到Writer里
 			log.info("forword to beetl: " + path);
 		} catch (Exception e) {
-			throw new RuntimeException("forword to beetl failed: ", e);
+			error(e);
 		}
 		return "DONE";
 	}
@@ -420,7 +433,7 @@ public class Context {
 		try {
 			getResponse().getWriter().write(content);
 		} catch (Exception e) {
-			throw new RuntimeException("Exception at li.mvc.Context.write(String)", e);
+			error(e);
 		}
 		return ABSTRACT_ACTION;
 	}
@@ -439,7 +452,7 @@ public class Context {
 			}
 			log.info("upload success");
 		} catch (Throwable e) {
-			throw new RuntimeException("upload failed: ", e);
+			error(e);
 		}
 		return ABSTRACT_ACTION;
 	}

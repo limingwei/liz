@@ -29,16 +29,22 @@ import li.util.Verify;
  */
 public class ActionFilter implements Filter {
 	private static final Log log = Log.init();
+	/**
+	 * 是否使用国际化
+	 */
+	private static final String I18N = Files.load("config.properties").getProperty("servlet.i18n", "false");
 
 	/**
 	 * 初始化Filter,设置一些环境变量,只执行一次
 	 */
 	public void init(FilterConfig config) throws ServletException {
-		// 默认的环境变量
-		config.getServletContext().setAttribute("root", config.getServletContext().getContextPath() + "/");
-		// 根据Locale.getDefault()初始化国际化,存到servletContext
-		config.getServletContext().setAttribute("lang", Files.load(Locale.getDefault().toString()));
-		log.info(String.format("Setting default language as %s", Locale.getDefault()));
+		if ("true".equals(I18N.trim().toLowerCase())) {
+			// 默认的环境变量
+			config.getServletContext().setAttribute("root", config.getServletContext().getContextPath() + "/");
+			// 根据Locale.getDefault()初始化国际化,存到servletContext
+			config.getServletContext().setAttribute("lang", Files.load(Locale.getDefault().toString()));
+			log.info(String.format("Setting default language as %s", Locale.getDefault()));
+		}
 	}
 
 	/**
@@ -52,11 +58,13 @@ public class ActionFilter implements Filter {
 		request.setCharacterEncoding(encoding);
 		response.setCharacterEncoding(encoding);
 
-		// 根据Parameter参数设置国际化,存到session
-		String lang = request.getParameter("lang");
-		if (!Verify.isEmpty(lang)) {
-			((HttpServletRequest) request).getSession().setAttribute("lang", Files.load(lang));
-			log.info(String.format("Setting language for %s", lang));
+		if ("true".equals(I18N.trim().toLowerCase())) {
+			// 根据Parameter参数设置国际化,存到session
+			String lang = request.getParameter("lang");
+			if (!Verify.isEmpty(lang)) {
+				((HttpServletRequest) request).getSession().setAttribute("lang", Files.load(lang));
+				log.info(String.format("Setting language for %s", lang));
+			}
 		}
 
 		// 请求路径路由
