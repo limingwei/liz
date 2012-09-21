@@ -72,21 +72,21 @@ public class AopChain {
 	 * 返回被代理方法宿主对象
 	 */
 	public Object getTarget() {
-		return target;
+		return this.target;
 	}
 
 	/**
 	 * 返回被代理方法
 	 */
 	public Method getMethod() {
-		return method;
+		return this.method;
 	}
 
 	/**
 	 * 返回方法参数
 	 */
 	public Object[] getArgs() {
-		return args;
+		return this.args;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class AopChain {
 	 * 返回方法返回值,注意:在方法执行后才会取值
 	 */
 	public Object getResult() {
-		return result;
+		return this.result;
 	}
 
 	/**
