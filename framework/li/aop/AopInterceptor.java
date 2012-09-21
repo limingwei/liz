@@ -35,11 +35,9 @@ public class AopInterceptor implements MethodInterceptor {
 	private void filtersMap(Class<?> type) {
 		for (Method method : type.getDeclaredMethods()) {// 对每一个方法
 			List<AopFilter> filters = new ArrayList<>();
-			Aop aop = method.getAnnotation(Aop.class);// 如果有@Aop注解
-			if (null != aop) {
-				for (Class<? extends AopFilter> filterType : aop.value()) {// 对每一个@Aop.value()的值
-					filters.add(Ioc.get(filterType));
-				}
+			Aop aop = method.getAnnotation(Aop.class);
+			for (int i = 0; null != aop && i < aop.value().length; i++) {// 如果有@Aop注解,对每一个@Aop.value()的值
+				filters.add(Ioc.get(aop.value()[i]));
 			}
 			if (null != method.getAnnotation(Trans.class)) {// 如果有@Trans注解
 				filters.add(TRANS_FILTER);
