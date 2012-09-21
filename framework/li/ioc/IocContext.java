@@ -65,7 +65,7 @@ public class IocContext {
 
 			// STEP-3-实例化并Aop化所有的Bean,并缓存之
 			for (Bean bean : IOC_CONTEXT.BEANS) {
-				bean.instance = new AopInterceptor().getInstance(Reflect.born(bean.type));
+				bean.instance = new AopInterceptor().getInstance(bean.type);
 			}
 
 			// STEP-4-给IocContext中的Bean设置属性

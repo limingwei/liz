@@ -8,7 +8,6 @@ import java.util.Map;
 
 import li.annotation.Aop;
 import li.annotation.Trans;
-import li.ioc.Ioc;
 import li.util.Reflect;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -39,7 +38,6 @@ public class AopInterceptor implements MethodInterceptor {
 			Aop aop = method.getAnnotation(Aop.class);// 如果有@Aop注解
 			if (null != aop) {
 				for (Class<? extends AopFilter> filterType : aop.value()) {// 对每一个@Aop.value()的值
-					// filters.add(Ioc.get(filterType));
 					filters.add(Reflect.born(filterType));// 实例化这个AopFilter并加入到列表,用Ioc管理AopFilter失败
 				}
 			}
@@ -52,11 +50,13 @@ public class AopInterceptor implements MethodInterceptor {
 
 	/**
 	 * Aop包裹一个对象
+	 * 
+	 * @param <T>
 	 */
-	public Object getInstance(Object target) {
-		filtersMap(target.getClass());// 构造这个对象类型所有方法的AopFilter集合
+	public Object getInstance(Class<?> type) {
+		filtersMap(type);// 构造这个对象类型所有方法的AopFilter集合
 		Enhancer enhancer = new Enhancer();
-		enhancer.setSuperclass(target.getClass());
+		enhancer.setSuperclass(type);
 		enhancer.setCallback(this);
 		return enhancer.create();
 	}
