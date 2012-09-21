@@ -60,7 +60,7 @@ public class AopChain {
 			if (null == filters || index == filters.size()) {// 如果没有AopFilter或者已经经过全部AopFilter
 				this.result = proxy.invokeSuper(target, args);// 则执行目标方法
 			} else {
-				filters.get(index++).doFilter(this);// 执行下一个AopFilter
+				filters.get(index++).doFilter(this);// 执行第index个AopFilter然后i++
 			}
 		} catch (Throwable e) {
 			throw new RuntimeException("May be because your AopFilter is not a Bean", e);
