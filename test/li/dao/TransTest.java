@@ -16,6 +16,11 @@ public class TransTest extends BaseTest {
 	User userDao;
 
 	@Test
+	public void testMultipleTrans() {
+		userDao.testMultipleTrans2();
+	}
+
+	@Test
 	public void testPassValue() {
 		User user = (User) new Trans(false) {
 			public void run() {
