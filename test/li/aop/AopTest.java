@@ -13,6 +13,12 @@ public class AopTest extends BaseTest {
 		account.list(null);
 	}
 
+	@Test
+	public void testAop2() {
+		User user = Ioc.get(User.class);
+		user.sayHi("abc", "xyz");
+	}
+
 	public static void main(String[] args) throws Exception {
 
 		final Account account = Ioc.get(Account.class);

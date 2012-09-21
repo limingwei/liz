@@ -13,7 +13,7 @@ public class Account extends Record<Account> {
 	private static final long serialVersionUID = -3592765768245992120L;
 
 	@Trans
-	@Aop({ LogFilter.class, LogFilter.class })
+	@Aop({ LogFilter.class })
 	public List<Account> list(Page page) {
 		return super.list(page);
 	}
