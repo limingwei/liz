@@ -18,11 +18,7 @@ import net.sf.cglib.proxy.MethodProxy;
  * @author li (limw@w.cn)
  * @version 0.1.1 (2012-09-20)
  */
-public class AopInterceptor implements MethodInterceptor {
-	/**
-	 * 保存当前对象各方法的AopFilters
-	 */
-	private Map<Method, List<AopFilter>> filtersMap = new HashMap<>();
+public class AopInterceptor {
 	/**
 	 * 内置的TransFilter
 	 */
@@ -37,10 +33,12 @@ public class AopInterceptor implements MethodInterceptor {
 	};
 
 	/**
-	 * 搜集指定类型所有方法的AopFilter
+	 * Aop包裹一个对象
 	 */
-	private void filtersMap(Class<?> type) {
-		for (Method method : type.getDeclaredMethods()) {// 对每一个方法
+	public static Object getInstance(Class<?> type) {
+		// 构造这个类型所有方法的AopFilter的集合
+		final Map<Method, List<AopFilter>> filtersMap = new HashMap<>();
+		for (Method method : type.getDeclaredMethods()) {
 			List<AopFilter> filters = new ArrayList<>();
 			Aop aop = method.getAnnotation(Aop.class);
 			for (int i = 0; null != aop && i < aop.value().length; i++) {// 如果有@Aop注解,对每一个@Aop.value()的值
@@ -51,23 +49,14 @@ public class AopInterceptor implements MethodInterceptor {
 			}
 			filtersMap.put(method, filters);
 		}
-	}
-
-	/**
-	 * Aop包裹一个对象
-	 */
-	public Object getInstance(Class<?> type) {
-		filtersMap(type);// 构造这个对象类型所有方法的AopFilter集合
+		// 创建代理
 		Enhancer enhancer = new Enhancer();
-		enhancer.setCallback(this);
 		enhancer.setSuperclass(type);
+		enhancer.setCallback(new MethodInterceptor() {// 设置callback
+			public Object intercept(Object target, Method method, Object[] args, MethodProxy proxy) throws Throwable {
+				return new AopChain(target, method, args, filtersMap.get(method), proxy).doFilter().getResult();// 使用AopChian代理执行这个方法并返回值
+			}
+		});
 		return enhancer.create();
-	}
-
-	/**
-	 * 代理执行方法
-	 */
-	public Object intercept(Object target, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-		return new AopChain(target, method, args, filtersMap.get(method), proxy).doFilter().getResult();// 使用AopChian代理执行这个方法并返回值
 	}
 }
