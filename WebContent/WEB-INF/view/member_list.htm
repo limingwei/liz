@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="source/jquery/css/ui-lightness/jquery-ui-1.8.24.custom.css" type="text/css" />
+<script src="source/jquery/jquery-1.8.2.min.js"></script>
+<script src="source/jquery/jquery-ui-1.8.24.custom.min.js"></script>
+<script>
+	$(function() {
+		$("button#edit").button();
+		$("button#delete").button();
+		$("button#add").button().click(function() {
+			$("div#add").dialog();
+			$("#birthday").datepicker();
+		});
+	});
+</script>
+</head>
+<body>
+	<div>
+		<h1>顶部</h1>
+	</div>
+	<div>
+		<button id="add">新增</button>
+	</div>
+	<div>
+		<table>
+			<thead>
+				<tr>
+					<th>编号</th>
+					<th>姓名</th>
+					<th>性别</th>
+					<th>生日</th>
+					<th>学号</th>
+					<th>电话</th>
+					<th>QQ</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for(member in members){ %>
+				<tr>
+					<td>${member['code']}</td>
+					<td>${member['name']}</td>
+					<td>${member['sex']}</td>
+					<td>${member['birthday']}</td>
+					<td>${member['student_id']}</td>
+					<td>${member['phone']}</td>
+					<td>${member['qq']}</td>
+					<td>
+						<button id="edit">修改</button>
+						<button id="delete">删除</button>
+					</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<a>共${page.recordCount}条</a> <a>共${page.pageCount}页</a> <a href="member_list?pn=1">首页</a> <a href="member_list?pn=${page.previous}">上一页</a> <a href="member_list?pn=${page.next}">下一页</a> <a href="member_list?pn=${page.pageCount}">尾页</a>
+	</div>
+	<div>
+		<h1>底部</h1>
+	</div>
+
+	<div id="add" title="新增" style="display: none;">
+		<form action="member_save" method="POST">
+			<table>
+				<tr>
+					<td><a>编号</a></td>
+					<td><input type="text" name="member.code" value=""></td>
+				</tr>
+				<tr>
+					<td><a>姓名</a></td>
+					<td><input type="text" name="member.name" value=""></td>
+				</tr>
+				<tr>
+					<td><a>性别</a></td>
+					<td><input type="radio" name="member.sex" value="1" />男 <input type="radio" name="member.sex" value="0" />女 <input type="radio" name="member.sex" value="-1" />保密</td>
+				</tr>
+				<tr>
+					<td><a>生日</a></td>
+					<td><input type="text" id="birthday" name="member.birthday" value=""></td>
+				</tr>
+				<tr>
+					<td><a>学号</a></td>
+					<td><input type="text" name="member.student_id" value=""></td>
+				</tr>
+				<tr>
+					<td><a>学院</a></td>
+					<td><select>
+							<option value="">信息科学与技术学院</option>
+							<option value="">信息科学与技术学院</option>
+							<option value="">信息科学与技术学院</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td><a>专业</a></td>
+					<td><select>
+							<option value="">软件工程</option>
+							<option value="">软件工程</option>
+							<option value="">软件工程</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td><a>电话</a></td>
+					<td><input type="text" name="member.phone" value=""></td>
+				</tr>
+				<tr>
+					<td><a>QQ</a></td>
+					<td><input type="text" name="member.qq" value=""></td>
+				</tr>
+				<tr>
+					<td><input type="reset"></td>
+					<td><input type="submit"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>
