@@ -1,12 +1,2 @@
 eclipse.preferences.version=1
-encoding//demo/beetl.properties=UTF-8
-encoding//demo/config.properties=UTF-8
-encoding//demo/freemarker.properties=UTF-8
-encoding//demo/lang_en_US.properties=UTF-8
-encoding//demo/lang_zh_CN.properties=UTF-8
-encoding//demo/velocity.properties=UTF-8
 encoding/README.md=UTF-8
-encoding/demo=UTF-8
-encoding/ext=UTF-8
-encoding/framework=UTF-8
-encoding/test=UTF-8
