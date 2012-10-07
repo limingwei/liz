@@ -18,17 +18,16 @@
 	});
 	
 	function add(){
-		$("div#add").load("member_add");
+		$("div#add").load("member_add.do");
 		$("div#add").dialog({
 			title:"新增",
 			modal: true,
 			position:[200,100]
 		});
-		$("#birthday").datepicker();
 	}
 	
 	function edit(id){
-		$("div#edit").load("member_edit?id="+id);
+		$("div#edit").load("member_edit.do?id="+id);
 		$( "div#edit" ).dialog({
 			title:"修改",
 			modal: true,

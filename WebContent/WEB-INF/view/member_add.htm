@@ -16,7 +16,8 @@
 </script>
 </head>
 <body>
-	<form action="member_save" method="POST">
+	<form action="member_save.do" method="POST">
+		<input type="hidden" name="member.status" value="1">
 		<table>
 			<tr>
 				<td><a>编号</a></td>
@@ -63,8 +64,8 @@
 				<td><input type="text" name="member.qq" value=""></td>
 			</tr>
 			<tr>
-				<td><input type="submit" id="submit"></td>
-				<td><input type="reset" id="reset"></td>
+				<td><input type="submit" id="submit" value="提交"></td>
+				<td><input type="reset" id="reset" value="重置"></td>
 			</tr>
 		</table>
 	</form>

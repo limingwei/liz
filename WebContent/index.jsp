@@ -7,6 +7,6 @@
 </head>
 <body>
 <h1>welcome</h1>
-<a href="member_list">member_list</a>
+<a href="member_list.do">member_list</a>
 </body>
 </html>
