@@ -12,22 +12,34 @@ import li.util.Page;
 @Bean
 public class MemberAction extends AbstractAction {
 	@Inject
-	Member memberDao;
+	Member memberRecord;
 
 	@At("member_list")
 	public void list(@Arg("pn") Page page) {
-		setRequest("members", memberDao.list(page));
+		setRequest("members", memberRecord.list(page));
 		setRequest("page", page);
 		view("member_list");
 	}
 
 	@At("member_add")
 	public void add() {
+		setRequest("nextCode", memberRecord.nextCode());
 		view("member_add");
 	}
 
 	@At(value = "member_save", method = "POST")
 	public void save(Member member) {
-		memberDao.save(member);
+		memberRecord.save(member);
+	}
+
+	@At("member_edit")
+	public void edit(Integer id) {
+		setRequest("member", memberRecord.findById(id));
+		view("member_edit");
+	}
+
+	@At(value = "member_update", method = "POST")
+	public void update(Member member) {
+		memberRecord.update(member);
 	}
 }

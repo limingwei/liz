@@ -9,18 +9,50 @@
 <script>
 	$(function() {
 		$("button#edit").button();
-		$("button#delete").button();
-		$("button#add").button().click(function() {
-			$("div#add").dialog();
-			$("#birthday").datepicker();
+		$("button#delete").button();		
+		$("button#add").button();
+		
+		$("button#add").click(function() {
+			add();
 		});
 	});
+	
+	function add(){
+		$("div#add").load("member_add");
+		$("div#add").dialog({
+			title:"新增",
+			modal: true,
+			position:[200,100]
+		});
+		$("#birthday").datepicker();
+	}
+	
+	function edit(id){
+		$("div#edit").load("member_edit?id="+id);
+		$( "div#edit" ).dialog({
+			title:"修改",
+			modal: true,
+			position:[200,100]
+		});
+	}
+	
+	function del(id){
+		$( "div#delete" ).dialog({
+			modal: true,
+			buttons: {
+				"Delete all items": function() {
+					$( this ).dialog( "close" );
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+			}
+		});
+		
+	}
 </script>
 </head>
 <body>
-	<div>
-		<h1>顶部</h1>
-	</div>
 	<div>
 		<button id="add">新增</button>
 	</div>
@@ -43,14 +75,14 @@
 				<tr>
 					<td>${member['code']}</td>
 					<td>${member['name']}</td>
-					<td>${member['sex']}</td>
+					<td><%if(member['sex']=='1'){%>男 <%}else if(member['sex']=='0'){%>女<%}else{%>保密<%}%></td>
 					<td>${member['birthday']}</td>
 					<td>${member['student_id']}</td>
 					<td>${member['phone']}</td>
 					<td>${member['qq']}</td>
 					<td>
-						<button id="edit">修改</button>
-						<button id="delete">删除</button>
+						<button id="edit" onClick="edit(${member['id']})">修改</button>
+						<button id="delete" onClick="del(${member['id']})">删除</button>
 					</td>
 				</tr>
 				<% } %>
@@ -60,63 +92,7 @@
 	<div>
 		<a>共${page.recordCount}条</a> <a>共${page.pageCount}页</a> <a href="member_list?pn=1">首页</a> <a href="member_list?pn=${page.previous}">上一页</a> <a href="member_list?pn=${page.next}">下一页</a> <a href="member_list?pn=${page.pageCount}">尾页</a>
 	</div>
-	<div>
-		<h1>底部</h1>
-	</div>
-
-	<div id="add" title="新增" style="display: none;">
-		<form action="member_save" method="POST">
-			<table>
-				<tr>
-					<td><a>编号</a></td>
-					<td><input type="text" name="member.code" value=""></td>
-				</tr>
-				<tr>
-					<td><a>姓名</a></td>
-					<td><input type="text" name="member.name" value=""></td>
-				</tr>
-				<tr>
-					<td><a>性别</a></td>
-					<td><input type="radio" name="member.sex" value="1" />男 <input type="radio" name="member.sex" value="0" />女 <input type="radio" name="member.sex" value="-1" />保密</td>
-				</tr>
-				<tr>
-					<td><a>生日</a></td>
-					<td><input type="text" id="birthday" name="member.birthday" value=""></td>
-				</tr>
-				<tr>
-					<td><a>学号</a></td>
-					<td><input type="text" name="member.student_id" value=""></td>
-				</tr>
-				<tr>
-					<td><a>学院</a></td>
-					<td><select>
-							<option value="">信息科学与技术学院</option>
-							<option value="">信息科学与技术学院</option>
-							<option value="">信息科学与技术学院</option>
-					</select></td>
-				</tr>
-				<tr>
-					<td><a>专业</a></td>
-					<td><select>
-							<option value="">软件工程</option>
-							<option value="">软件工程</option>
-							<option value="">软件工程</option>
-					</select></td>
-				</tr>
-				<tr>
-					<td><a>电话</a></td>
-					<td><input type="text" name="member.phone" value=""></td>
-				</tr>
-				<tr>
-					<td><a>QQ</a></td>
-					<td><input type="text" name="member.qq" value=""></td>
-				</tr>
-				<tr>
-					<td><input type="reset"></td>
-					<td><input type="submit"></td>
-				</tr>
-			</table>
-		</form>
-	</div>
+	<div id="add"></div>
+	<div id="edit"></div>
 </body>
 </html>
