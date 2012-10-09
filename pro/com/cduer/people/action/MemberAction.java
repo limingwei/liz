@@ -7,6 +7,7 @@ import li.annotation.At;
 import li.annotation.Bean;
 import li.annotation.Inject;
 import li.mvc.AbstractAction;
+import li.util.Convert;
 import li.util.Page;
 
 @Bean
@@ -18,13 +19,8 @@ public class MemberAction extends AbstractAction {
 	public void list(@Arg("pn") Page page) {
 		setRequest("members", memberRecord.list(page));
 		setRequest("page", page);
-		view("member_list");
-	}
-
-	@At("member_add.do")
-	public void add() {
 		setRequest("nextCode", memberRecord.nextCode());
-		view("member_add");
+		view("member_list");
 	}
 
 	@At(value = "member_save.do", method = "POST")
@@ -34,12 +30,16 @@ public class MemberAction extends AbstractAction {
 
 	@At("member_edit.do")
 	public void edit(Integer id) {
-		setRequest("member", memberRecord.findById(id));
-		view("member_edit");
+		write(Convert.toJson(memberRecord.findById(id)));
 	}
 
 	@At(value = "member_update.do", method = "POST")
 	public void update(Member member) {
 		memberRecord.update(member);
+	}
+
+	@At(value = "member_delete.do", method = "POST")
+	public void delete(Integer id) {
+		memberRecord.deleteById(id);
 	}
 }

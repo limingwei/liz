@@ -6,48 +6,64 @@
 <link rel="stylesheet" href="source/jquery/css/ui-lightness/jquery-ui-1.8.24.custom.css" type="text/css" />
 <script src="source/jquery/jquery-1.8.2.min.js"></script>
 <script src="source/jquery/jquery-ui-1.8.24.custom.min.js"></script>
+<script src="source/jquery/jquery.form.js"></script>
+
 <script>
 	$(function() {
 		$("button#edit").button();
 		$("button#delete").button();		
-		$("button#add").button();
+		$("button#add").button();	
+		$("input#birthday").datepicker();
 		
 		$("button#add").click(function() {
-			add();
+			$("div#edit").dialog({
+				title:"新增",
+				modal: true,
+				position:[200,100],
+				buttons: {
+	                "提交": function() {
+	                	$("form#edit").attr("action", "member_save.do");
+	                	$("form#edit").ajaxSubmit();
+	                    $( this ).dialog( "close" );
+	        			window.location.reload();
+	                }
+	            }
+			});
+			$("input#name").focus();
 		});
 	});
-	
-	function add(){
-		$("div#add").load("member_add.do");
-		$("div#add").dialog({
-			title:"新增",
-			modal: true,
-			position:[200,100]
-		});
-	}
-	
+
 	function edit(id){
-		$("div#edit").load("member_edit.do?id="+id);
+		$.post("member_edit.do", {id: id},
+			function(data){
+				$("input#id").val(data.id);
+				$("input#code").val(data.code);
+				$("input#name").val(data.name);
+				$("select#sex").val(data.sex);
+				$("input#birthday").val(data.birthday);
+				$("input#student_id").val(data.student_id);	
+				$("input#phone").val(data.phone);	
+				$("input#qq").val(data.qq);	
+				$("input#status").val(data.status);	
+			}, "json");		
 		$( "div#edit" ).dialog({
 			title:"修改",
 			modal: true,
-			position:[200,100]
+			position:[200,100],
+			buttons: {
+                "提交": function() {
+                	$("form#edit").attr("action", "member_update.do");
+                	$("form#edit").ajaxSubmit();
+                    $( this ).dialog( "close" );
+                }
+            }
 		});
 	}
 	
 	function del(id){
-		$( "div#delete" ).dialog({
-			modal: true,
-			buttons: {
-				"Delete all items": function() {
-					$( this ).dialog( "close" );
-				},
-				Cancel: function() {
-					$( this ).dialog( "close" );
-				}
-			}
-		});
-		
+		if(confirm("确定要删除这条数据吗？")){
+			$.post("member_delete.do",{id:id});
+		}
 	}
 </script>
 </head>
@@ -89,9 +105,64 @@
 		</table>
 	</div>
 	<div>
-		<a>共${page.recordCount}条</a> <a>共${page.pageCount}页</a> <a href="member_list?pn=1">首页</a> <a href="member_list?pn=${page.previous}">上一页</a> <a href="member_list?pn=${page.next}">下一页</a> <a href="member_list?pn=${page.pageCount}">尾页</a>
+		<a>共${page.recordCount}条</a> <a>共${page.pageCount}页</a> <a href="member_list.do?pn=1">首页</a> <a href="member_list.do?pn=${page.previous}">上一页</a> <a href="member_list.do?pn=${page.next}">下一页</a> <a href="member_list.do?pn=${page.pageCount}">尾页</a>
 	</div>
-	<div id="add"></div>
-	<div id="edit"></div>
+	<div id="edit" style="display: none;">
+		<form id="edit" method="POST">
+			<input type="hidden" id="id" name="member.id"> <input type="hidden" id="status" name="member.status" value="1">
+			<table>
+				<tr>
+					<td><a>编号</a></td>
+					<td><input type="text" id="code" name="member.code" value="${nextCode}"></td>
+				</tr>
+				<tr>
+					<td><a>姓名</a></td>
+					<td><input type="text" id="name" name="member.name"></td>
+				</tr>
+				<tr>
+					<td><a>性别</a></td>
+					<td>
+					 <select id="sex" name="member.sex">
+						<option value="-1" selected="selected">保密</option>
+						<option value="1">男</option>
+						<option value="0">女</option>
+					</select>
+					</td>
+				</tr>
+				<tr>
+					<td><a>生日</a></td>
+					<td><input type="text" id="birthday" name="member.birthday"></td>
+				</tr>
+				<tr>
+					<td><a>学号</a></td>
+					<td><input type="text" id="student_id" name="member.student_id"></td>
+				</tr>
+				<tr>
+					<td><a>学院</a></td>
+					<td><select>
+							<option>信息科学与技术学院</option>
+							<option>美术学院</option>
+							<option>电子信息工程学院</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td><a>专业</a></td>
+					<td><select>
+							<option>软件工程</option>
+							<option>网络工程</option>
+							<option>计算机科学与技术</option>
+					</select></td>
+				</tr>
+				<tr>
+					<td><a>电话</a></td>
+					<td><input type="text" id="phone" name="member.phone"></td>
+				</tr>
+				<tr>
+					<td><a>QQ</a></td>
+					<td><input type="text" id="qq" name="member.qq"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </body>
 </html>
