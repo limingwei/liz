@@ -26,27 +26,39 @@
 	                	$("form#edit").ajaxSubmit();
 	                    $( this ).dialog( "close" );
 	        			window.location.reload();
-	                }
+	                },
+					"重置": function() {
+						$("form#edit").each(function(index){
+							$("form#edit")[index].reset();
+						});
+		            },
+					"关闭": function() {
+	                    $( this ).dialog( "close" );
+		            }
 	            }
 			});
 			$("input#name").focus();
 		});
 	});
 
-	function edit(id){
+	function load(id){
 		$.post("member_edit.do", {id: id},
-			function(data){
-				$("input#id").val(data.id);
-				$("input#code").val(data.code);
-				$("input#name").val(data.name);
-				$("select#sex").val(data.sex);
-				$("input#birthday").val(data.birthday);
-				$("input#student_id").val(data.student_id);	
-				$("input#phone").val(data.phone);	
-				$("input#qq").val(data.qq);	
-				$("input#status").val(data.status);	
-			}, "json");		
-		$( "div#edit" ).dialog({
+				function(data){
+					$("input#id").val(data.id);
+					$("input#code").val(data.code);
+					$("input#name").val(data.name);
+					$("select#sex").val(data.sex);
+					$("input#birthday").val(data.birthday);
+					$("input#student_id").val(data.student_id);	
+					$("input#phone").val(data.phone);	
+					$("input#qq").val(data.qq);	
+					$("input#status").val(data.status);	
+				}, "json");
+	}
+	
+	function edit(id){
+		load(id);
+		$("div#edit").dialog({
 			title:"修改",
 			modal: true,
 			position:[200,100],
@@ -55,7 +67,13 @@
                 	$("form#edit").attr("action", "member_update.do");
                 	$("form#edit").ajaxSubmit();
                     $( this ).dialog( "close" );
-                }
+                },
+				"重置": function() {
+					load(id);
+	            },
+				"关闭": function() {
+                    $( this ).dialog( "close" );
+	            }
             }
 		});
 	}
@@ -121,13 +139,11 @@
 				</tr>
 				<tr>
 					<td><a>性别</a></td>
-					<td>
-					 <select id="sex" name="member.sex">
-						<option value="-1" selected="selected">保密</option>
-						<option value="1">男</option>
-						<option value="0">女</option>
-					</select>
-					</td>
+					<td><select id="sex" name="member.sex">
+							<option value="-1" selected="selected">保密</option>
+							<option value="1">男</option>
+							<option value="0">女</option>
+					</select></td>
 				</tr>
 				<tr>
 					<td><a>生日</a></td>
