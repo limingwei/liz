@@ -15,6 +15,10 @@
 		$("button#add").button();	
 		$("input#birthday").datepicker();
 		
+		$("select#college").change(function(){
+			loadMajor($("select#college").val());
+		});
+
 		$("button#add").click(function() {
 			$("div#edit").dialog({
 				title:"新增",
@@ -41,6 +45,16 @@
 		});
 	});
 
+	function loadMajor(collegeId){
+		$("select#major").empty();
+		$.post("major_list.do", {collegeId: collegeId},
+			function(data){
+				$.each(data,function(index){
+					$("select#major").append("<option value='"+data[index].id+"'>"+data[index].name+"</option>");
+				});
+			}, "json");
+	}
+	
 	function load(id){
 		$.post("member_edit.do", {id: id},
 				function(data){
@@ -155,19 +169,13 @@
 				</tr>
 				<tr>
 					<td><a>学院</a></td>
-					<td><select>
-							<option>信息科学与技术学院</option>
-							<option>美术学院</option>
-							<option>电子信息工程学院</option>
+					<td><select id="college"> <% for(college in colleges){ %>
+							<option value="${college['id']}">${college['name']}</option> <% } %>
 					</select></td>
 				</tr>
 				<tr>
 					<td><a>专业</a></td>
-					<td><select>
-							<option>软件工程</option>
-							<option>网络工程</option>
-							<option>计算机科学与技术</option>
-					</select></td>
+					<td><select id="major"></select></td>
 				</tr>
 				<tr>
 					<td><a>电话</a></td>

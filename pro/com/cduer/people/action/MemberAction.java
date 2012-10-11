@@ -1,5 +1,6 @@
 package com.cduer.people.action;
 
+import com.cduer.people.record.College;
 import com.cduer.people.record.Member;
 
 import li.annotation.Arg;
@@ -15,11 +16,15 @@ public class MemberAction extends AbstractAction {
 	@Inject
 	Member memberRecord;
 
+	@Inject
+	College collegeRecord;
+
 	@At("member_list.do")
 	public void list(@Arg("pn") Page page) {
 		setRequest("members", memberRecord.list(page));
 		setRequest("page", page);
 		setRequest("nextCode", memberRecord.nextCode());
+		setRequest("colleges", collegeRecord.list(new Page(1, 100)));
 		view("member_list");
 	}
 
