@@ -22,7 +22,7 @@ public class Beetl {
 	public Beetl(File file) {
 		try {
 			GroupTemplate groupTemplate = new Config().createGroupTemplate();
-			groupTemplate.setStatementStart("<!-- #");
+			groupTemplate.setStatementStart("<!---");
 			groupTemplate.setStatementEnd("-->");
 			template = groupTemplate.getReaderTemplate(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		} catch (Exception e) {
